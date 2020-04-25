@@ -10,9 +10,11 @@ var x, y, srcx, srcy, sheetWidth, sheetHeight, frameColumn, width, height;//, cu
 var canWidth, canHeight;
 var clownImage;
 var ctx;
-var frame0 = 44;
-var frame1 = 88;
-var frame2 = 132;
+var frame0 = 43;
+var frame1 = 76;
+var frame2 = 110;
+var standardImage = 42;
+var sideImage = 33;
 var bool, gameOver, isKey = 0;
 
 function initialise() {
@@ -29,7 +31,7 @@ function initialise() {
     sheetWidth = 108;
     sheetHeight = 51;
     frameColumn = 3;
-    width = frame0;
+    width = standardImage;
     height = 51;
     
     // set x by canvas.width - sprite.width then divide by 2
@@ -54,11 +56,12 @@ function startGame() {
 }
 
 function updateFrame(leftOrRight) {
+    ctx.clearRect(0, 0, canWidth, canHeight);
     if(leftOrRight === 37) {
-        width = frame1;
+        width = sideImage;
         x -= 5;
     } else if (leftOrRight === 39) {
-        width = frame2;
+        width = sideImage;
         x += 5;
     }
     // to make smooth movement (first increment delay) we use:
@@ -97,7 +100,7 @@ document.onkeydown = function(event) {
             case 37:
                 //alert('left key'); // call function updateFrame(left)?
                 // ** WE LOOP UPDATEFRAME UNTIL ONKEYUP -> THEN BREAK
-                srcx = 80;
+                srcx = frame1;
                 bool = 1;
                 updateFrame(37);
             break;
