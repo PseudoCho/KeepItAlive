@@ -13,6 +13,7 @@ var ctx;
 var frame0 = 44;
 var frame1 = 88;
 var frame2 = 132;
+var bool, gameOver, isKey = 0;
 
 function initialise() {
     //var preload = document.createElement("CANVAS");
@@ -56,7 +57,7 @@ function updateFrame(leftOrRight) {
     if(leftOrRight === 37) {
         width = frame1;
         x -= 5;
-    } else if(leftOrRight === 39) {
+    } else if (leftOrRight === 39) {
         width = frame2;
         x += 5;
     }
@@ -65,7 +66,11 @@ function updateFrame(leftOrRight) {
     // https://forum.jquery.com/topic/how-to-move-an-element-with-arrow-keys-consistently
 
     ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
-    
+    if(bool) {
+        setTimeout(function() {
+            updateFrame(leftOrRight);
+        }, 30);
+    }
     // currentFrame = ++currentFrame % frameColumn;
     
     //srcx = currentFrame * width;
@@ -80,19 +85,28 @@ function draw() {
         }, 50);
     }
     ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
-    
-    //ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
+}
+
+document.onkeyup = function() {
+    bool = 0;
 }
 
 document.onkeydown = function(event) {
-    switch(event.keyCode) {
-       case 37:
-          //alert('left key'); // call function updateFrame(left)?
-            updateFrame(37);
-         break;
-       case 39:
-          //alert('right key'); // call function updateFrame(right)?
-            updateFrame(39);
-         break;
+    if(!bool) {
+        switch(event.keyCode) {
+            case 37:
+                //alert('left key'); // call function updateFrame(left)?
+                // ** WE LOOP UPDATEFRAME UNTIL ONKEYUP -> THEN BREAK
+                srcx = 80;
+                bool = 1;
+                updateFrame(37);
+            break;
+            case 39:
+                //alert('right key'); // call function updateFrame(right)?
+                srcx = 45;
+                bool = 1;
+                updateFrame(39);
+            break;
+        }
     }
 };
