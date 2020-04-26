@@ -14,3 +14,15 @@ Sprite animation to be included.
 8. x and y coordinates of two object types - player clown and deadly objects
 
 Next: Text(?) based adventure game using jewelrpg pics as canvas backgrounds
+
+
+Random poop falls from the sky
+
+Something like-
+
+-Draw (along with ctx.canvas) poop images:
+Initialise poop in array
+For i in lengthof(array)
+Draw poop - standardised srcx,srcy,width,height and randomised start x,y and y-5 each frame
+
+*Do 1 poop first
