@@ -32,6 +32,7 @@ var j = 0;
 var numberOfPoop = 8;
 var poopx = 0;
 var poopRandom = [];
+var interval = 25;
 
 
 function initialise() {
@@ -117,8 +118,10 @@ function draw() {
     //}
     //ctx.drawImage(poopImage, 0, poopHeight);
     TemporaryTimer++;
-    if(TemporaryTimer === 2000) {
+    if(TemporaryTimer === 100000) {
         gameOver = 1;
+    } else if((!(TemporaryTimer % 2000)) && (interval > 4)) {
+        interval -= 4;
     }
     if(!gameOver) {
         setTimeout(function() {
@@ -130,7 +133,7 @@ function draw() {
                 // gameOver = 1; TODO: we will make gameOver = 1 only when poop hits clown
             }
             draw();
-        }, 25);
+        }, interval);
     }
     //poopHeight -= 5;
 }
@@ -158,6 +161,12 @@ function multiplePoop(timer) {
         k++;
     }
 }
+
+function detectCollision()
+    //pseudocode:
+    IF K IS BETWEEN CANHEIGHT AND CANHEIGHT-200 THEN >>> CALL THIS FUNCTION
+        CHECK IF COLLISION OF POOP AND CLOWN X POSITIONS
+            IF SO THEN GAMEOVER = 1
 
 // Since we're using draw() function to update frame, we don't need updateFrame() function anymore otherwise it doubles up
 
