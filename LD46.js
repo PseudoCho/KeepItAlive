@@ -6,6 +6,14 @@
 // right = 39
 // down = 40
 
+
+
+
+// **** I NEED TO LINE 96 *** //
+
+
+
+
 var x, y, srcx, srcy, sheetWidth, sheetHeight, frameColumn, width, height;//, currentFrame;
 var canWidth, canHeight;
 var clownImage;
@@ -16,6 +24,15 @@ var frame2 = 110;
 var standardImage = 42;
 var sideImage = 33;
 var bool, gameOver, isKey = 0;
+var poopHeight = 0;
+var leftOrRight = 0;
+var TemporaryTimer = 0;
+var i;
+var j = 0;
+var numberOfPoop = 8;
+var poopx = 0;
+var poopRandom = [];
+
 
 function initialise() {
     //var preload = document.createElement("CANVAS");
@@ -48,15 +65,103 @@ function startGame() {
     ctx = c.getContext("2d");
     clownImage = new Image();
     clownImage.src = "./clownsmall.png";
+    poopImage = new Image();
+    poopImage.src = "./poop.png"
    // clownImage = document.getElementById("htmlClown");
     //ctx.drawImage(clownImage, 0, 0); 
     //ctx.drawImage(clownImage, 15, 0, 93, 51, 0, 0, 15, 51)
     //ctx.drawImage(clownImage, 0, 0, 0, 0, 0, 0, 10, 50);
+    var k;
+    for(k = 0; k < numberOfPoop; k++) {
+        poopRandom[k] = (Math.random() * (canWidth - poopImage.width));
+    }
     draw();
 }
 
-function updateFrame(leftOrRight) {
+function draw() {
+    // updateFrame();
+    if(!clownImage.complete) {
+        setTimeout(function() {
+            draw();
+        }, 50);
+    }
+    if(leftOrRight === 37) {
+        width = sideImage;
+        x -= 5;
+    } else if (leftOrRight === 39) {
+        width = sideImage;
+        x += 5;
+    } else {
+        srcx = 0;
+        width = standardImage;
+    }
+    //ctx.clearRect(0, 0, canWidth, canHeight);
+    //ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
+    multiplePoop(TemporaryTimer); // fix - bring the draw to the multiplePoop() function or while draw outside
+
+    //multiplePoop = function(temporaryTimer) {
+     //   alert("hi");
+       // i = temporaryTimer;
+        //if(i > 200) {
+          //  i -= 200;
+           // multiplePoop(i)
+    //    }
+     //   ctx.drawImage(poopImage, 0, 0);
+        //poop[j] = poopImage;
+        //ctx.drawImage(poop[j], 0, (poopHeight - (200 * j)));
+      //  j++;
+        //for(i = 0; i < numberOfPoop; i++) {
+        //    poop[i] = poopImage;
+        //}
+        //*** TODO: RECURSIVE ANONYMOUS FUNCTION WITH FOR LOOP OF TEMPORARYTIMER / 100? AS THE LOOPING INDEX
+    //}
+    //ctx.drawImage(poopImage, 0, poopHeight);
+    TemporaryTimer++;
+    if(TemporaryTimer === 2000) {
+        gameOver = 1;
+    }
+    if(!gameOver) {
+        setTimeout(function() {
+            poopHeight += 5;
+            if(poopHeight >= canHeight) {
+                poopHeight -= 200;
+                poopRandom.shift();
+                poopRandom.push(Math.random() * (canWidth - poopImage.width));
+                // gameOver = 1; TODO: we will make gameOver = 1 only when poop hits clown
+            }
+            draw();
+        }, 25);
+    }
+    //poopHeight -= 5;
+}
+
+function multiplePoop(timer) {
+/*    if(timer >= 200) {
+        timer -= 200;
+        multiplePoop(timer)
+        poop[j] = poopImage;
+        var hello = poopHeight - (200 * j)
+        ctx.drawImage(poop[j], 0, hello);
+        j++;
+    }*/
     ctx.clearRect(0, 0, canWidth, canHeight);
+    if((timer % 40) === 0) {
+        j = timer / 40;
+    }
+    //poopx = (Math.random() * (canWidth - poopImage.width)) @@@@@@@@@@@@@@@HELP@@@@@@@@@@@@@@@@
+    ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
+    //ctx.drawImage(poopImage, poopx, poopHeight);
+    var k = 0;
+    while(k <= j) {
+        //poop[j] = poopImage;
+        ctx.drawImage(poopImage, poopRandom[k], (poopHeight - (200 * k)));
+        k++;
+    }
+}
+
+// Since we're using draw() function to update frame, we don't need updateFrame() function anymore otherwise it doubles up
+
+/* function updateFrame(leftOrRight) {
     if(leftOrRight === 37) {
         width = sideImage;
         x -= 5;
@@ -67,8 +172,10 @@ function updateFrame(leftOrRight) {
     // to make smooth movement (first increment delay) we use:
     // Animate() is not what you want for smooth moves.  If you use .css to move one pixel at a time, start it up when the key is pressed, and stop when the key is released. You get smoothness.
     // https://forum.jquery.com/topic/how-to-move-an-element-with-arrow-keys-consistently
-
+    ctx.clearRect(0, 0, canWidth, canHeight);
     ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
+    poopHeight +=5; 
+    ctx.drawImage(poopImage, 0, poopHeight);
     if(bool) {
         setTimeout(function() {
             updateFrame(leftOrRight);
@@ -78,20 +185,23 @@ function updateFrame(leftOrRight) {
     
     //srcx = currentFrame * width;
     // srcy = 0; // srcy is always 0
-}
+} */
 
-function draw() {
-   // updateFrame();
-    if(!clownImage.complete) {
-        setTimeout(function() {
-            draw();
-        }, 50);
+document.onkeyup = function(event) {
+    switch(event.keyCode) {
+        case 37:
+            if(srcx === frame1) {
+                bool = 0;
+                leftOrRight = 0;
+            }
+        break;
+        case 39:
+            if(srcx === frame0) {
+                bool = 0;
+                leftOrRight = 0;
+            }
+        break;
     }
-    ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
-}
-
-document.onkeyup = function() {
-    bool = 0;
 }
 
 document.onkeydown = function(event) {
@@ -102,13 +212,13 @@ document.onkeydown = function(event) {
                 // ** WE LOOP UPDATEFRAME UNTIL ONKEYUP -> THEN BREAK
                 srcx = frame1;
                 bool = 1;
-                updateFrame(37);
+                leftOrRight = 37;
             break;
             case 39:
                 //alert('right key'); // call function updateFrame(right)?
-                srcx = 45;
+                srcx = frame0;
                 bool = 1;
-                updateFrame(39);
+                leftOrRight = 39;
             break;
         }
     }
