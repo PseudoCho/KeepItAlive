@@ -10,19 +10,9 @@ Sprite animation to be included.
 4. Clown moves in a canvas area
 5. Make this game like Yena's poop game
 6. Keep track of score
-7. W A S D (or left, right, up, down)
+7. Left/Right movement
 8. x and y coordinates of two object types - player clown and deadly objects
 
-Next: Text(?) based adventure game using jewelrpg pics as canvas backgrounds
-
-
-Random poop falls from the sky
-
-Something like-
-
--Draw (along with ctx.canvas) poop images:
-Initialise poop in array
-For i in lengthof(array)
-Draw poop - standardised srcx,srcy,width,height and randomised start x,y and y-5 each frame
-
-*Do 1 poop first
+Game is up on https://andrewlalala119278.web.app - hosted with Firebase.
+Not complete (movement still to be fixed) but for the most part, I want to move on to the next project.
+This game did not use object oriented programming until the end for the score tracker.
