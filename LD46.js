@@ -33,6 +33,7 @@ var numberOfPoop = 8;
 var poopx = 0;
 var poopRandom = [];
 var interval = 25;
+var score = 0;
 
 
 function initialise() {
@@ -126,6 +127,9 @@ function draw() {
     if(!gameOver) {
         setTimeout(function() {
             poopHeight += 5;
+            if(poopHeight >= (canHeight - (clownImage.height + poopImage.height))) {
+                detectCollision();
+            }
             if(poopHeight >= canHeight) {
                 poopHeight -= 200;
                 poopRandom.shift();
@@ -151,6 +155,8 @@ function multiplePoop(timer) {
     if((timer % 40) === 0) {
         j = timer / 40;
     }
+    score++;
+    drawScore();
     //poopx = (Math.random() * (canWidth - poopImage.width)) @@@@@@@@@@@@@@@HELP@@@@@@@@@@@@@@@@
     ctx.drawImage(clownImage, srcx, srcy, width, height, x, y, width, height);
     //ctx.drawImage(poopImage, poopx, poopHeight);
@@ -162,11 +168,25 @@ function multiplePoop(timer) {
     }
 }
 
-function detectCollision()
+function detectCollision() {
     //pseudocode:
-    IF K IS BETWEEN CANHEIGHT AND CANHEIGHT-200 THEN >>> CALL THIS FUNCTION
-        CHECK IF COLLISION OF POOP AND CLOWN X POSITIONS
-            IF SO THEN GAMEOVER = 1
+    if(((x + width) >= poopRandom[0]) && (x <= (poopRandom[0] + poopImage.width))) {
+        gameOver = 1;
+    }
+}
+
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: "+score, 8, 20);
+}
+    //x is start of x position of clown
+    //width is clown width
+    //poopRandom[0] is x position of random poop
+    //poopImage.width is width of poop
+
+    //    CHECK IF COLLISION OF POOP AND CLOWN X POSITIONS
+    //        IF SO THEN GAMEOVER = 1
 
 // Since we're using draw() function to update frame, we don't need updateFrame() function anymore otherwise it doubles up
 
